@@ -1,7 +1,7 @@
 <template>
   <div class='max-w-screen-sm mx-auto px-4 py-10'>
-    <div v-if='error' class='mb-10 p-4 rounded-md bg-light-grey shadow-lg'>
-      <p class='text-red-500'>{{ error }}</p>
+    <div v-if='errorMsg' class='mb-10 p-4 rounded-md bg-light-grey shadow-lg'>
+      <p class='text-red-500'>{{ errorMsg }}</p>
     </div>
 
     <form class='p-8 flex flex-col bg-light-grey rounded-md shadow-lg'>
@@ -51,9 +51,9 @@ export default {
   setup() {
     const email = ref(null)
     const password = ref(null)
-    const error = ref(null)
+    const errorMsg = ref(null)
 
-    return { email, password, error };
+    return { email, password, errorMsg };
   },
 };
 </script>
