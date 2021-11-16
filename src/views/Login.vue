@@ -57,23 +57,19 @@ export default {
     const errorMsg = ref(null)
 
     const login = async () => {
-      if(password.value === confirmPassword.value) {
-        try {
-          const { error } = await supabase.auth.signIn({
-            email: email.value,
-            password: password.value
-          })
-          if(error) throw error
-          router.push({ name: 'Home' })
-        } catch(error) {
-          errorMsg.value = `Error: ${error.message}`
-        }
-        return 
+      try {
+        const { error } = await supabase.auth.signIn({
+          email: email.value,
+          password: password.value
+        })
+        if(error) throw error
+        router.push({ name: 'Home' })
+      } catch(error) {
+        errorMsg.value = `Error: ${error.message}`
+        setTimeout(() => {
+          errorMsg.value = null
+        }, 5000)
       }
-      errorMsg.value = 'Error: Passwords do not match'
-      setTimeout(() => {
-        errorMsg.value = null
-      }, 5000)
     }
 
     return { email, password, errorMsg, login };
