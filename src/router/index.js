@@ -3,12 +3,17 @@ import Home from "../views/Home.vue";
 import Login from '../views/Login'
 import Register from '../views/Register'
 import Create from '../views/Create'
+import ViewWorkout from "../views/ViewWorkout.vue"
 
 const routes = [
   {
     path: "/",
     name: "Home",
     component: Home,
+    meta: {
+      title: "Home",
+      auth: false,
+    },
   },
   {
     path: "/login",
@@ -37,6 +42,15 @@ const routes = [
       auth: false,
     },
   },
+  {
+    path: "/view-workout/:workoutId",
+    name: "View-Workout",
+    component: ViewWorkout,
+    meta: {
+      title: "View Workout",
+      auth: false,
+    },
+  }
 ];
 
 const router = createRouter({

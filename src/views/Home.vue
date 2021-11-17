@@ -68,6 +68,7 @@ export default {
         const { data: workouts, error } = await supabase.from("workouts").select("*");
         if (error) throw error;
         data.value = workouts;
+        console.log(data.value)
         dataLoaded.value = true;
       } catch (error) {
         console.warn(error.message);
