@@ -215,7 +215,66 @@ export default {
     const statusMsg = ref(null);
     const errorMsg = ref(null);
 
+    const addExercise = async () => {
+      if(workoutType.value === 'strength') {
+        exercises.value.push({
+          id: uid(),
+          exercise: "",
+          sets: "",
+          reps: "",
+          weight: ""
+        })
+        return
+      }
+      exercises.value.push({
+        id: uid(),
+        cardioType: "",
+        distance: "",
+        duration: "",
+        pace: ""
+      })
+    }
 
+    const deleteExercise = id => {
+      if (exercises.value.length > 1) {
+        exercises.value = exercises.value.filter((exercise) => exercise.id !== id);
+        return;
+      }
+      errorMsg.value = "Error: Cannot remove, need to at least have one exercise";
+      setTimeout(() => {
+        errorMsg.value = false;
+      }, 5000);
+    }
+
+    const workoutChange = () => {
+      exercises.value = []
+      addExercise()
+    }
+
+    const createWorkout = async () => {
+      try {
+        const { error } = await supabase.from("workouts").insert([
+          {
+            workoutName: workoutName.value,
+            workoutType: workoutType.value,
+            exercises: exercises.value,
+          },
+        ]);
+        if (error) throw error;
+        statusMsg.value = "Succes: Workout Created!";
+        workoutName.value = null;
+        workoutType.value = "select-workout";
+        exercises.value = [];
+        setTimeout(() => {
+          statusMsg.value = false;
+        }, 5000);
+      } catch (error) {
+        errorMsg.value = `Error: ${error.message}`;
+        setTimeout(() => {
+          errorMsg.value = false;
+        }, 5000);
+      }
+    };
 
     return {
       workoutName,
