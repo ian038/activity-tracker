@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { supabase } from "../supabase/init"
 import Home from "../views/Home.vue";
 import Login from '../views/Login'
 import Register from '../views/Register'
@@ -58,8 +59,22 @@ const router = createRouter({
   routes,
 });
 
-// Change document titles
+router.beforeEach((to, from, next) => {
+  document.title = `${to.meta.title} | Active Tracker`;
+  next();
+});
 
-// Route guard for auth routes
+router.beforeEach((to, from, next) => {
+  const user = supabase.auth.user();
+  if (to.matched.some((res) => res.meta.auth)) {
+    if (user) {
+      next();
+      return;
+    }
+    next({ name: "Login" });
+    return;
+  }
+  next();
+});
 
 export default router;
